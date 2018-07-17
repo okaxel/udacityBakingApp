@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Baking App component.
+ *
+ * Copyright © 2018 by Axel Ország-Krisz Dr.
+ *
+ * ===
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ -->
+<resources>
+
+    <!-- Basic application data -->
+    <string name="app_name">BakingApp</string>
+    <string name="app_name_and_version">BakingApp 1st try</string>
+
+    <string name="activity_step_list">BakinApp - Step List</string>
+    <string name="activity_step_details">BakingApp - Step Details</string>
+
+    <string name="recipe_steps_placeholder">Recipe name</string>
+    <string name="step_short_description_placeholder">Short description</string>
+
+    <string name="tv_show_ingredients">Show ingredients</string>
+
+    <!-- Toast message texts -->
+    <string name="toast_network_needed">Baking App needs network connection to download recipe database.</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_recipe_image">Image for the selected recipe</string>
+    <string name="cd_step_player">Video of this preparation step</string>
+    <string name="cd_step_image">Image of this preparation step</string>
+
+    <!-- Portrait style step description buttons -->
+    <string name="btn_prev_step">Previous step</string>
+    <string name="btn_next_step">Next step</string>
+
+    <!-- Toast messages -->
+    <string name="toast_turn_to_fullscreen">Turn the device landscape full-screen playback.</string>
+    <string name="toast_turn_from_fullscreen">Turn the device portrait to escape full-screen playback.</string>
+
+    <!-- Widget strings -->
+    <string name="widget_title">Select recipe!</string>
+    <string name="add_widget">Add widget</string>
+
+    <!-- Keys to store and restore data in bundle -->
+    <string name="bundle_key_recipes" translatable="false">recipes</string>
+
+    <!-- Network location of recipe data. -->
+    <string name="recipe_location" translatable="false">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
+
+    <!-- Cross-activity intent keys -->
+    <string name="key_recipe_id" translatable="false">recipeid</string>
+    <string name="key_recipe_object" translatable="false">recipeobject</string>
+
+    <string name="key_recipe_name" translatable="false">recipename</string>
+    <string name="key_steps" translatable="false">steps</string>
+    <string name="key_step_item" translatable="false">stepitem</string>
+    <string name="key_step_item_id" translatable="false">stepitemid</string>
+    <string name="key_fragment_single_pane_mode" translatable="false">singlepane</string>
+
+    <!-- ExoPlayer keys -->
+    <string name="key_exo_position" translatable="false">playerposition</string>
+    <string name="key_exo_state" translatable="false">playerstate</string>
+    <string name="key_exo_link" translatable="false">playedlink</string>
+    <string name="key_exo_fullscreen">exofullscreen</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Baking App component.
+ *
+ * Copyright © 2018 by Axel Ország-Krisz Dr.
+ *
+ * ===
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ -->
+<resources>
+    <color name="colorPrimary">#8800AA</color>
+    <color name="colorPrimaryDark">#660077</color>
+    <color name="colorAccent">#FFD42A</color> <!-- #A05A2C -->
+    <color name="colorBakingPrimary">#8800AA</color>
+    <color name="colorBakingPrimaryDark">#660077</color>
+    <color name="colorBakingAccent">#FFD42A</color>
+    <color name="colorBakingAccentVariant">#A05A2C</color>
+    <color name="colorBakingBackground">#f0f0f0</color>
+    <color name="colorBakingCardViewDefault">#ffffff</color>
+    <color name="colorBakingInactiveButton">#c0c0c0</color>
+    <color name="colorBakingTextDark">#000000</color>
+    <color name="colorBakingTextLight">#ffffff</color>
+</resources>
