@@ -32,7 +32,9 @@
         android:layout_width="match_parent"
         android:visibility="gone"
         android:id="@+id/step_player"
-        android:contentDescription="@string/cd_step_player"/>
+        android:contentDescription="@string/cd_step_player"
+        app:fastforward_increment="1000"
+        app:rewind_increment="1000"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"

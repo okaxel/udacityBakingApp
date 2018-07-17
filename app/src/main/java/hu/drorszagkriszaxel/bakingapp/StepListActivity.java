@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,8 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import hu.drorszagkriszaxel.bakingapp.model.Recipe;
 import hu.drorszagkriszaxel.bakingapp.widget.IngredientsWidget;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -85,14 +82,6 @@ public class StepListActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }
-
         Intent inIntent = getIntent();
 
         if (inIntent.hasExtra(getString(R.string.key_recipe_id))) {
@@ -153,30 +142,6 @@ public class StepListActivity extends AppCompatActivity {
 
         super.onBackPressed();
     }
-
-    /**
-     * It's required to override this to maintain the Intent-data-cycle between activities.
-     *
-     * @param item Unused, the selected item
-     * @return     In case of success true
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-
-                onBackPressed();
-                return true;
-
-            }
-
-            default: return super.onOptionsItemSelected(item);
-
-        }
-
-    }
-
 
     /**
      * This method gives the sparkle to the RecyclerView of steps. It uses activity level variables.

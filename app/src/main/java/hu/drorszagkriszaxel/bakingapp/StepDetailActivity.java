@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -67,14 +66,6 @@ public class StepDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
         ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        }
 
         Intent inIntent = getIntent();
 
@@ -141,29 +132,6 @@ public class StepDetailActivity extends AppCompatActivity {
         startActivity(outIntent);
 
         super.onBackPressed();
-
-    }
-
-    /**
-     * It's required to override this to maintain the Intent-data-cycle between activities.
-     *
-     * @param item Unused, the selected item
-     * @return     In case of success true
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-
-                onBackPressed();
-                return true;
-
-            }
-
-            default: return super.onOptionsItemSelected(item);
-
-        }
 
     }
 

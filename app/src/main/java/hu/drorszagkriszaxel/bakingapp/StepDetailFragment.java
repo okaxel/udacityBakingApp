@@ -232,8 +232,10 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
-        if (playedLink != null)
-            playerPosition = simpleExoPlayer.getCurrentPosition(); else playerPosition = 0;
+        // Removed because we have the playerPosition in onPause yet. (Suggestion from Review)
+        //
+        // if (playedLink != null)
+        //    playerPosition = simpleExoPlayer.getCurrentPosition(); else playerPosition = 0;
 
         outState.putLong(getString(R.string.key_exo_position),playerPosition);
         outState.putBoolean(getString(R.string.key_exo_state),playerWhenReady);
@@ -244,18 +246,22 @@ public class StepDetailFragment extends Fragment {
     }
 
     /**
-     * If the user doesn't use the activity they don't need ExoPlayer too. This method solves it.
+     * If the user doesn't use the activity they don't need ExoPlayer too. This method solves it if
+     * API level is less then 23. (Suggestion from Review)
      */
     @Override
     public void onPause() {
 
-        if (playedLink != null) {
+        if (playedLink != null && Util.SDK_INT <= 23) {
 
             playerWhenReady = simpleExoPlayer.getPlayWhenReady();
             simpleExoPlayer.setPlayWhenReady(false);
             playerPosition = simpleExoPlayer.getCurrentPosition();
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
+
+            // ExoPlayer is nullified here to completely release the player. (Requirement from Review)
+            simpleExoPlayer = null;
 
         }
 
@@ -264,40 +270,72 @@ public class StepDetailFragment extends Fragment {
     }
 
     /**
+     * If the user doesn't use the activity they don't need ExoPlayer too. This method solves it if
+     * API level is at least 23. (Suggestion from Review)
+     */
+    @Override
+    public void onStop() {
+
+        if (playedLink != null && Util.SDK_INT > 23) {
+
+            playerWhenReady = simpleExoPlayer.getPlayWhenReady();
+            simpleExoPlayer.setPlayWhenReady(false);
+            playerPosition = simpleExoPlayer.getCurrentPosition();
+            simpleExoPlayer.stop();
+            simpleExoPlayer.release();
+
+            // ExoPlayer is nullified here to completely release the player. (Requirement from Review)
+            simpleExoPlayer = null;
+
+        }
+
+        super.onStop();
+    }
+
+    /**
      * If the user uses the activity again they need ExoPlayer too. This method solves it. In case
      * if the device isn't tablet, this method initiates the toggle of fullscreen mode of the videos
-     * if needed.
+     * if needed. To ensure all of this happens always this method starts when API level is less
+     * then 23. (Suggestion from Review)
      */
     @Override
     public void onResume() {
 
-        if (playerPosition !=0 ) initializeExoPlayer(getContext());
+        if (Util.SDK_INT <= 23) {
 
-        if (singlePaneMode) {
+            // Old version. Now I think it was sort of type. See the new version below.
+            // if (playerPosition !=0 ) initializeExoPlayer(getContext());
 
-            Configuration configuration = getResources().getConfiguration();
+            // New version. (The base of this solution is a requirement of the Review)
+            if (playedLink != null) initializeExoPlayer(getContext());
 
-            if (exoFullscreen == FULLSCREEN_NOT_DETECTED_AND_NEVER_CHANGED) {
+            if (singlePaneMode) {
 
-                toggleFullscreen(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE);
+                Configuration configuration = getResources().getConfiguration();
 
-            } else {
+                if (exoFullscreen == FULLSCREEN_NOT_DETECTED_AND_NEVER_CHANGED) {
 
-                if (exoFullscreen == FULLSCREEN_ON) {
-
-                    if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-                        exoFullscreen = FULLSCREEN_OFF;
-                        toggleFullscreen(false);
-
-                    }
+                    toggleFullscreen(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
                 } else {
 
-                    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    if (exoFullscreen == FULLSCREEN_ON) {
 
-                        exoFullscreen = FULLSCREEN_ON;
-                        toggleFullscreen(true);
+                        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                            exoFullscreen = FULLSCREEN_OFF;
+                            toggleFullscreen(false);
+
+                        }
+
+                    } else {
+
+                        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+                            exoFullscreen = FULLSCREEN_ON;
+                            toggleFullscreen(true);
+
+                        }
 
                     }
 
@@ -309,6 +347,62 @@ public class StepDetailFragment extends Fragment {
 
         super.onResume();
 
+    }
+
+    /**
+     * If the user uses the activity again they need ExoPlayer too. This method solves it. In case
+     * if the device isn't tablet, this method initiates the toggle of fullscreen mode of the videos
+     * if needed. To ensure all of this happens as soon as possible this method starts when API
+     * level is at least 23. (Suggestion from Review)
+     */
+    @Override
+    public void onStart() {
+
+        if (Util.SDK_INT > 23) {
+
+            // Old version. Now I think it was sort of type. See the new version below.
+            // if (playerPosition !=0 ) initializeExoPlayer(getContext());
+
+            // New version. (The base of this solution is a requirement of the Review)
+            if (playedLink != null) initializeExoPlayer(getContext());
+
+            if (singlePaneMode) {
+
+                Configuration configuration = getResources().getConfiguration();
+
+                if (exoFullscreen == FULLSCREEN_NOT_DETECTED_AND_NEVER_CHANGED) {
+
+                    toggleFullscreen(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE);
+
+                } else {
+
+                    if (exoFullscreen == FULLSCREEN_ON) {
+
+                        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                            exoFullscreen = FULLSCREEN_OFF;
+                            toggleFullscreen(false);
+
+                        }
+
+                    } else {
+
+                        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+                            exoFullscreen = FULLSCREEN_ON;
+                            toggleFullscreen(true);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        super.onStart();
     }
 
     /**
@@ -357,6 +451,9 @@ public class StepDetailFragment extends Fragment {
 
         if (simpleExoPlayer == null) {
 
+            dummyView.setVisibility(View.GONE);
+            playerView.setVisibility(View.VISIBLE);
+
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context,new DefaultTrackSelector(),
                     new DefaultLoadControl());
 
@@ -403,13 +500,6 @@ public class StepDetailFragment extends Fragment {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
-            if (playbackState == Player.STATE_READY && !failed) {
-
-                dummyView.setVisibility(View.GONE);
-                playerView.setVisibility(View.VISIBLE);
-
-            }
-
             if (playbackState == Player.STATE_ENDED) {
 
                 simpleExoPlayer.seekTo(0);
@@ -433,8 +523,6 @@ public class StepDetailFragment extends Fragment {
         public void onPlayerError(ExoPlaybackException error) {
 
             failed = true;
-            playerView.setVisibility(View.GONE);
-            dummyView.setVisibility(View.VISIBLE);
 
         }
 

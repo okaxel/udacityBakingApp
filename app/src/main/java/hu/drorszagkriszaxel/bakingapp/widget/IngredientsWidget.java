@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import hu.drorszagkriszaxel.bakingapp.MainActivity;
@@ -36,6 +38,9 @@ import hu.drorszagkriszaxel.bakingapp.model.Recipe;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
+ * ---
+ *
+ * This class provides home screen widget.
  */
 public class IngredientsWidget extends AppWidgetProvider {
 
@@ -57,11 +62,24 @@ public class IngredientsWidget extends AppWidgetProvider {
                                 int appWidgetId, Recipe recipe, int recipeId) {
 
         CharSequence widgetText = context.getString(R.string.widget_title);
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
+
         if (recipe != null) {
 
             views.setTextViewText(R.id.widget_title, recipe.getName());
+
+            Intent adapterIntent = new Intent(context,IngredientWidgetService.class);
+            Bundle bundle = new Bundle();
+
+            bundle.putParcelable(context.getString(R.string.key_bundle_ingredients),recipe);
+
+            adapterIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+            adapterIntent.putExtra(context.getString(R.string.key_ingredients_bundle),bundle);
+            adapterIntent.setData(Uri.parse(adapterIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+            views.setRemoteAdapter(R.id.widget_ingredients_list,adapterIntent);
 
         } else {
 
@@ -69,28 +87,29 @@ public class IngredientsWidget extends AppWidgetProvider {
 
         }
 
-        Intent intent;
+        Intent outIntent;
 
 
         if (recipeId == -1) {
 
-            intent = new Intent(context, MainActivity.class);
+            outIntent = new Intent(context, MainActivity.class);
 
         } else {
 
-            if (recipe != null) views.setTextViewText(R.id.widget_ingredients_list,formIngredients(recipe));
+            // if (recipe != null) views.setTextViewText(R.id.widget_ingredients_list,formIngredients(recipe));
 
-            intent = new Intent(context, StepListActivity.class);
+            outIntent = new Intent(context, StepListActivity.class);
 
-            intent.putExtra(context.getString(R.string.key_recipe_id),recipeId);
-            intent.putExtra(context.getString(R.string.key_recipe_object),recipe);
+            outIntent.putExtra(context.getString(R.string.key_recipe_id),recipeId);
+            outIntent.putExtra(context.getString(R.string.key_recipe_object),recipe);
 
         }
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,outIntent,0);
         views.setOnClickPendingIntent(R.id.ll_widget,pendingIntent);
 
         // Instruct the widget manager to update the widget
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.widget_ingredients_list);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 

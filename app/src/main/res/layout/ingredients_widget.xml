@@ -21,13 +21,13 @@
  *
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_widget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBakingBackground"
     android:padding="@dimen/widget_margin"
     android:orientation="vertical">
-
     <TextView
         android:id="@+id/widget_title"
         android:layout_width="match_parent"
@@ -41,17 +41,10 @@
         android:textColor="@color/colorBakingTextLight"
         android:textSize="24sp"
         android:textStyle="bold|italic" />
-    <TextView
-        android:id="@+id/widget_ingredients_list"
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0dp"
-        android:background="@color/colorBakingBackground"
-        android:padding="6dp"
-        android:textAlignment="viewStart"
-        android:gravity="start"
-        android:layout_gravity="start"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorBakingTextDark"/>
+        android:id="@+id/widget_ingredients_list"
+        tools:listitem="@layout/ingredients_widget_item">
+    </ListView>
 </LinearLayout>

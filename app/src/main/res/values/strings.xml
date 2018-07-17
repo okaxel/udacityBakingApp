@@ -70,6 +70,9 @@
     <string name="key_step_item_id" translatable="false">stepitemid</string>
     <string name="key_fragment_single_pane_mode" translatable="false">singlepane</string>
 
+    <string name="key_ingredients_bundle" translatable="false">ingredientsbundle</string>
+    <string name="key_bundle_ingredients" translatable="false">ingredientsin</string>
+
     <!-- ExoPlayer keys -->
     <string name="key_exo_position" translatable="false">playerposition</string>
     <string name="key_exo_state" translatable="false">playerstate</string>
